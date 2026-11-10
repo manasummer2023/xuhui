@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>西岸中环汇 — Central Residences West Bund (Shanghai)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- Floating leaves -->
+<div class="leaves-layer" id="leavesLayer"></div>
+
+<!-- Navigation -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="nav-logo">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+        <path d="M17 3L27 13V25C27 27 25 29 23 29H11C9 29 7 27 7 25V13L17 3Z" stroke="#4a7c59" stroke-width="2" fill="none"/>
+        <path d="M12 19C12 16 14 14 17 14C20 14 22 16 22 19V29H12V19Z" fill="#4a7c59" opacity="0.3"/>
+        <path d="M17 14V8M14 11L17 8L20 11" stroke="#4a7c59" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span class="logo-text">西岸中环汇<span class="logo-sub">Central Residences West Bund (Shanghai)</span></span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#hero" class="nl">首页</a>
+      <a href="#about" class="nl">小区概览</a>
+      <a href="#apartments" class="nl">房源一览</a>
+      <a href="#lease" class="nl">申请人信息</a>
+      <a href="#apartment-applied" class="nl">我的公寓</a>
+      <a href="#community" class="nl">社区资讯</a>
+      <a href="#faq" class="nl">常见问题</a>
+      <button class="nl nav-account" id="accountBtn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M2 14C2 11 4.5 9 8 9C11.5 9 14 11 14 14" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span id="accountLabel">账户登录</span>
+      </button>
+    </div>
+    <button class="nav-toggle" id="navToggle"><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- Account / Video Verification Modal -->
+<div class="modal-overlay" id="accountModal">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose">&times;</button>
+    <div class="modal-step active" data-ms="1">
+      <div class="modal-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="16" r="8" stroke="#4a7c59" stroke-width="2.5"/><path d="M8 42C8 34 15 29 24 29C33 29 40 34 40 42" stroke="#4a7c59" stroke-width="2.5"/></svg></div>
+      <h3 class="modal-title">住户登录</h3>
+      <p class="modal-desc">请确认账户信息，进行人脸识别后进入</p>
+      <div class="account-form">
+        <div class="af-row"><label>账户名称</label><input type="text" id="loginName" value="刘力" readonly></div>
+        <div class="af-row"><label>账户编号</label><input type="text" id="loginId" value="S20001220BR" readonly></div>
+        <button type="button" class="btn-primary modal-next" data-ms-next>下一步：人脸识别</button>
+      </div>
+    </div>
+    <div class="modal-step" data-ms="2">
+      <h3 class="modal-title">人脸识别</h3>
+      <p class="modal-desc">请将面部置于画面中央，点击拍照完成验证</p>
+      <div class="video-wrap" id="videoWrap">
+        <video id="verifyVideo" autoplay playsinline></video>
+        <div class="video-overlay" id="videoOverlay"><div class="face-guide"></div></div>
+        <div class="video-status" id="videoStatus">正在启动摄像头…</div>
+      </div>
+      <div class="verify-actions">
+        <button type="button" class="btn-ghost" data-ms-prev>上一步</button>
+        <button type="button" class="btn-primary" id="startVerifyBtn">拍照</button>
+        <button type="button" class="btn-primary" id="verifyPassBtn" style="display:none;">确认进入</button>
+      </div>
+    </div>
+    <div class="modal-step" data-ms="3">
+      <div class="success-icon" style="margin-bottom:20px"><svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="29" stroke="#4a7c59" stroke-width="3"/><path d="M20 32L28 40L44 24" stroke="#4a7c59" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h3 class="modal-title">识别成功</h3>
+      <p class="modal-desc">欢迎回家，<strong>刘力</strong>，人脸验证已通过</p>
+      <button type="button" class="btn-primary" id="enterApplyBtn">进入查看</button>
+    </div>
+  </div>
+</div>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-sky"></div>
+  <div class="hero-sun"></div>
+  <div class="hero-clouds">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+  </div>
+  <div class="hero-forest"></div>
+  <div class="hero-content">
+    <div class="hero-poem">
+      <p class="poem-line">梧桐生矣，于彼朝阳。</p>
+      <p class="poem-line">此心安处，便是吾乡。</p>
+      <p class="poem-prose">西岸的风不急不缓，日子过着过着，这里就成了家。</p>
+    </div>
+    <div class="hero-badge"><span class="dot"></span> Central Residences West Bund · 欢迎回家</div>
+    <div class="hero-actions">
+      <a href="#lease" class="btn-leaf"><span>申请人信息</span></a>
+      <a href="#about" class="btn-text">小区概览</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hs-item"><span class="hs-num" data-count="3">3</span><span class="hs-unit">栋楼</span><span class="hs-label">住宅楼宇</span></div>
+      <div class="hs-divider"></div>
+      <div class="hs-item"><span class="hs-num" data-count="24">24</span><span class="hs-unit">小时</span><span class="hs-label">物业服务</span></div>
+      <div class="hs-divider"></div>
+      <div class="hs-item"><span class="hs-num" data-count="800">800</span><span class="hs-unit">米</span><span class="hs-label">滨江步道</span></div>
+    </div>
+  </div>
+  <div class="hero-scroll"><span>向下滚动</span><div class="scroll-line"></div></div>
+</section>
+
+<!-- About / Community Overview -->
+<section class="section about" id="about">
+  <div class="container">
+    <div class="section-head-left">
+      <span class="eyebrow">ABOUT · 小区概览</span>
+      <h2 class="section-title">安居西岸<br>诗意栖居</h2>
+      <p class="section-lead">西岸中环汇坐落于徐汇滨江核心区域，毗邻人工智能产业高地，为住户提供高品质租赁住房与温馨社区生活。</p>
+    </div>
+    <div class="bento-grid">
+      <div class="bento-card bento-lg">
+        <div class="bento-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M4 26L16 8L28 26H4Z" stroke="#4a7c59" stroke-width="2" stroke-linejoin="round"/><path d="M16 8V26" stroke="#4a7c59" stroke-width="2"/><rect x="12" y="18" width="8" height="8" fill="none" stroke="#4a7c59" stroke-width="1.5"/></svg></div>
+        <h3>地理位置</h3>
+        <p>位于徐汇滨江板块，紧邻龙腾大道，步行可达西岸艺术中心、油罐艺术中心、西岸凤巢等文化商业地标。地铁11号线云锦路站约500米，通勤便利。</p>
+        <div class="bento-deco"></div>
+      </div>
+      <div class="bento-card">
+        <div class="bento-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="10" stroke="#7ba88a" stroke-width="2"/><path d="M14 8V14L18 16" stroke="#7ba88a" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <h3>24小时物业</h3>
+        <p>全天候物业前台与安保巡逻，维修响应30分钟内上门，让居住无后顾之忧。</p>
+      </div>
+      <div class="bento-card">
+        <div class="bento-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M4 20L10 14L14 18L20 10L24 14" stroke="#7ba88a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22" cy="8" r="2" fill="#d4a574"/></svg></div>
+        <h3>园林景观</h3>
+        <p>中央庭院绿化率超35%，春有樱花、秋有银杏，四季皆有风景。</p>
+      </div>
+      <div class="bento-card bento-wide">
+        <div class="bento-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="3" y="6" width="22" height="16" rx="2" stroke="#7ba88a" stroke-width="2"/><path d="M3 12H25M10 6V4M18 6V4" stroke="#7ba88a" stroke-width="2"/></svg></div>
+        <h3>配套齐全</h3>
+        <p>每栋楼配备智能门禁、快递柜、共享洗衣房、屋顶花园。小区内设有健身房、阅读室、儿童活动区，周边1公里范围内覆盖便利店、超市、药店、餐饮等生活配套。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Apartments -->
+<section class="section section-forest apartments" id="apartments">
+  <div class="container">
+    <div class="section-head-center">
+      <span class="eyebrow">RESIDENCES · 房源一览</span>
+      <h2 class="section-title">小区房源</h2>
+      <p class="section-lead">以下为小区当前房源状态</p>
+    </div>
+    <div class="apt-grid">
+      <div class="apt-card">
+        <div class="apt-visual apt-v1"><div class="apt-overlay"><span class="apt-status apt-status-sold">租罄</span></div></div>
+        <div class="apt-info">
+          <span class="apt-loc">1号楼</span>
+          <h3>田东佳苑</h3>
+          <div class="apt-meta"><span>40㎡ · 一室户</span><span>3,000元/月起</span></div>
+          <p>南向采光，配套齐全，临近小区主入口</p>
+          <div class="apt-tags"><span>拎包入住</span><span>近入口</span><span>配套齐全</span></div>
+        </div>
+      </div>
+      <div class="apt-card apt-featured">
+        <div class="apt-visual apt-v2"><div class="apt-overlay"><span class="apt-status apt-status-sold">租罄</span></div></div>
+        <div class="apt-info">
+          <span class="apt-loc">2号楼</span>
+          <h3>漕河泾创新社区</h3>
+          <div class="apt-meta"><span>67㎡ · 两室户</span><span>3,800元/月起</span></div>
+          <p>面向科技企业人才，通勤便捷，含独立工作区</p>
+          <div class="apt-tags"><span>园区配套</span><span>科技人才</span><span>通勤便利</span></div>
+        </div>
+      </div>
+      <div class="apt-card">
+        <div class="apt-visual apt-v3"><div class="apt-overlay"><span class="apt-status apt-status-sold">租罄</span></div></div>
+        <div class="apt-info">
+          <span class="apt-loc">3号楼</span>
+          <h3>西岸滨江公寓</h3>
+          <div class="apt-meta"><span>50-80㎡ · 多户型</span><span>3,500元/月起</span></div>
+          <p>毗邻人工智能产业高地，江景视野，适合高端人才居住</p>
+          <div class="apt-tags"><span>江景房</span><span>AI产业</span><span>高端配套</span></div>
+        </div>
+      </div>
+    </div>
+    <p class="apt-notice">房源信息仅供参考，具体房源、价格及入住条件以实际公布为准。</p>
+  </div>
+</section>
+
+<!-- Lease Management -->
+<section class="section lease" id="lease">
+  <div class="container">
+    <div class="section-head-left">
+      <span class="eyebrow">MY PROFILE · 申请人信息</span>
+      <h2 class="section-title">申请人材料</h2>
+      <p class="section-lead">以下是您的住户档案信息</p>
+    </div>
+    <div class="profile-grid">
+      <!-- Profile card -->
+      <div class="profile-card profile-info-card">
+        <div class="profile-card-head">
+          <div class="profile-avatar">
+            <svg width="56" height="56" viewBox="0 0 56 56" fill="none"><circle cx="28" cy="20" r="10" stroke="#4a7c59" stroke-width="2.5"/><path d="M8 50C8 40 17 33 28 33C39 33 48 40 48 50" stroke="#4a7c59" stroke-width="2.5"/></svg>
+          </div>
+          <div class="profile-head-info">
+            <h3>刘力</h3>
+            <span class="profile-id">账户编号：S20001220BR</span>
+          </div>
+          <span class="lease-status">已认证</span>
+        </div>
+        <div class="lease-detail">
+          <div class="ld-row"><span class="ld-label">姓名</span><span class="ld-value">刘力</span></div>
+          <div class="ld-row"><span class="ld-label">学历</span><span class="ld-value ld-highlight">硕士</span></div>
+          <div class="ld-row"><span class="ld-label">账户编号</span><span class="ld-value">S20001220BR</span></div>
+          <div class="ld-row"><span class="ld-label">认证状态</span><span class="ld-value"><span class="verified-badge">已人脸识别</span></span></div>
+        </div>
+      </div>
+      <!-- Residence permit card -->
+      <div class="profile-card profile-permit-card">
+        <div class="lease-card-head">
+          <h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="2" stroke="#4a7c59" stroke-width="1.5"/><path d="M7 8H13M7 11H11" stroke="#4a7c59" stroke-width="1.2"/><circle cx="14" cy="13" r="2" fill="#d4a574"/></svg> 上海市居住证信息</h3>
+        </div>
+        <div class="lease-detail">
+          <div class="ld-row"><span class="ld-label">持证人</span><span class="ld-value">刘力</span></div>
+          <div class="ld-row ld-row-wide"><span class="ld-label">居住证地址</span><span class="ld-value">浦东新区张江镇益江路511弄88号501室</span></div>
+          <div class="ld-row"><span class="ld-label">登记日期</span><span class="ld-value ld-highlight">2026年1月30日</span></div>
+          <div class="ld-row"><span class="ld-label">状态</span><span class="ld-value"><span class="verified-badge">有效</span></span></div>
+        </div>
+      </div>
+      <!-- Education card -->
+      <div class="profile-card profile-edu-card">
+        <div class="lease-card-head">
+          <h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 8L10 4L17 8L10 12L3 8Z" stroke="#4a7c59" stroke-width="1.5" stroke-linejoin="round"/><path d="M7 10V14C7 14 8 16 10 16C12 16 13 14 13 14V10" stroke="#4a7c59" stroke-width="1.5"/></svg> 学历信息</h3>
+        </div>
+        <div class="lease-detail">
+          <div class="ld-row"><span class="ld-label">最高学历</span><span class="ld-value ld-highlight">硕士</span></div>
+          <div class="ld-row"><span class="ld-label">认证状态</span><span class="ld-value"><span class="verified-badge">已认证</span></span></div>
+        </div>
+      </div>
+    </div>
+    <!-- Detailed personal info -->
+    <div class="detail-section">
+      <h3 class="detail-title"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke="#4a7c59" stroke-width="1.5"/><path d="M3 17C3 13 6 11 10 11C14 11 17 13 17 17" stroke="#4a7c59" stroke-width="1.5"/></svg> 个人详细信息</h3>
+      <div class="detail-grid">
+        <div class="detail-item"><span class="di-label">是否有留学经历</span><span class="di-value di-yes">是</span></div>
+        <div class="detail-item"><span class="di-label">是否为本年度毕业生</span><span class="di-value di-yes">是</span></div>
+        <div class="detail-item"><span class="di-label">是否在上海参与工作</span><span class="di-value di-yes">是</span></div>
+        <div class="detail-item"><span class="di-label">是否参与五险一金</span><span class="di-value di-warn">否<span class="di-note">（请于3年内缴纳）</span></span></div>
+        <div class="detail-item"><span class="di-label">身份证号</span><span class="di-value di-mono">232324200012200615</span></div>
+        <div class="detail-item"><span class="di-label">联系电话</span><span class="di-value di-mono">18104502600</span></div>
+      </div>
+    </div>
+    <!-- Job recommendations -->
+    <div class="job-section">
+      <div class="job-section-head">
+        <h3 class="detail-title"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="6" width="14" height="11" rx="1.5" stroke="#4a7c59" stroke-width="1.5"/><path d="M7 6V4C7 3 8 2 9 2H11C12 2 13 3 13 4V6" stroke="#4a7c59" stroke-width="1.5"/><path d="M3 11H17" stroke="#4a7c59" stroke-width="1.2"/></svg> 待业推荐岗位</h3>
+        <p class="job-section-desc">根据您的个人简历，为您推荐以下岗位。可上传简历并直接推送至用人单位。</p>
+      </div>
+      <div class="job-list">
+        <!-- Job 1 -->
+        <div class="job-card">
+          <div class="job-card-head">
+            <div class="job-num">1</div>
+            <div class="job-title-area"><h4>上海交通大学国际与公共事务服务中心</h4><span class="job-role">波兰语教授助理 · 1名</span></div>
+            <div class="job-salary">15,000<span class="job-salary-unit">元/月</span></div>
+          </div>
+          <div class="job-card-body">
+            <p class="job-desc">重点培养公共管理学、政治学、国家安全学三个一级学科博士点。</p>
+            <div class="job-meta-row">
+              <span class="job-meta-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="#7ba88a" stroke-width="1.2"/><path d="M7 4V7L9 8" stroke="#7ba88a" stroke-width="1.2" stroke-linecap="round"/></svg> 全职</span>
+              <span class="job-meta-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="3" width="10" height="8" rx="1" stroke="#7ba88a" stroke-width="1.2"/><path d="M2 6H12" stroke="#7ba88a" stroke-width="1.2"/></svg> 按国家校务系统休假</span>
+            </div>
+          </div>
+          <div class="job-card-foot">
+            <div class="job-upload-area">
+              <input type="file" id="resume-1" accept=".pdf,.doc,.docx" class="resume-input">
+              <label for="resume-1" class="ul-btn">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2V10M7 2L4 5M7 2L10 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12H12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                <span class="resume-label-text" data-job="1">上传简历</span>
+              </label>
+              <span class="resume-status" id="resume-status-1">未上传</span>
+            </div>
+            <button class="btn-primary job-push-btn" data-job="1" data-name="上海交通大学国际与公共事务服务中心">推送简历</button>
+          </div>
+        </div>
+        <!-- Job 2 -->
+        <div class="job-card">
+          <div class="job-card-head">
+            <div class="job-num">2</div>
+            <div class="job-title-area"><h4>上海市森林国家管理局</h4><span class="job-role">波兰语植物翻译 · 3名</span></div>
+            <div class="job-salary">12,000<span class="job-salary-unit">元/月</span></div>
+          </div>
+          <div class="job-card-body">
+            <p class="job-desc">负责植物学相关文献的波兰语翻译工作。</p>
+            <div class="job-meta-row">
+              <span class="job-meta-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="3" width="10" height="8" rx="1" stroke="#7ba88a" stroke-width="1.2"/><path d="M2 6H12" stroke="#7ba88a" stroke-width="1.2"/></svg> 按公务系统休假安排</span>
+              <span class="job-meta-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="#7ba88a" stroke-width="1.2"/><path d="M7 4V10M4 7H10" stroke="#7ba88a" stroke-width="1.2" stroke-linecap="round"/></svg> 即岗</span>
+            </div>
+          </div>
+          <div class="job-card-foot">
+            <div class="job-upload-area">
+              <input type="file" id="resume-2" accept=".pdf,.doc,.docx" class="resume-input">
+              <label for="resume-2" class="ul-btn">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2V10M7 2L4 5M7 2L10 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12H12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                <span class="resume-label-text" data-job="2">上传简历</span>
+              </label>
+              <span class="resume-status" id="resume-status-2">未上传</span>
+            </div>
+            <button class="btn-primary job-push-btn" data-job="2" data-name="上海市森林国家管理局">推送简历</button>
+          </div>
+        </div>
+        <!-- Job 3 -->
+        <div class="job-card">
+          <div class="job-card-head">
+            <div class="job-num job-num-hot">3</div>
+            <div class="job-title-area"><h4>上海西岸梦中心国际旅游策划中心</h4><span class="job-role">波兰语策划师 · 1名</span></div>
+            <div class="job-salary job-salary-hot">35,000<span class="job-salary-unit">元/月</span></div>
+          </div>
+          <div class="job-card-body">
+            <p class="job-desc">负责国际旅游项目的波兰语策划与执行工作。</p>
+            <div class="job-meta-row">
+              <span class="job-meta-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="3" width="10" height="8" rx="1" stroke="#7ba88a" stroke-width="1.2"/><path d="M2 6H12" stroke="#7ba88a" stroke-width="1.2"/></svg> 按国家法定系统安排</span>
+              <span class="job-meta-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="#7ba88a" stroke-width="1.2"/><path d="M7 4V10M4 7H10" stroke="#7ba88a" stroke-width="1.2" stroke-linecap="round"/></svg> 即岗</span>
+            </div>
+          </div>
+          <div class="job-card-foot">
+            <div class="job-upload-area">
+              <input type="file" id="resume-3" accept=".pdf,.doc,.docx" class="resume-input">
+              <label for="resume-3" class="ul-btn">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2V10M7 2L4 5M7 2L10 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12H12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                <span class="resume-label-text" data-job="3">上传简历</span>
+              </label>
+              <span class="resume-status" id="resume-status-3">未上传</span>
+            </div>
+            <button class="btn-primary job-push-btn" data-job="3" data-name="上海西岸梦中心国际旅游策划中心">推送简历</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Applied Apartment -->
+<section class="section section-forest apartment-applied" id="apartment-applied">
+  <div class="container">
+    <div class="section-head-center">
+      <span class="eyebrow">MY APARTMENT · 已申请人才公寓</span>
+      <h2 class="section-title">我的公寓</h2>
+      <p class="section-lead">您已成功申请人才公寓，以下为公寓地址与位置信息</p>
+    </div>
+    <div class="apt-applied-grid">
+      <div class="apt-applied-info">
+        <div class="aai-status-row">
+          <span class="aai-status-badge">已配租</span>
+          <span class="aai-date">配租日期：2026年3月1日</span>
+        </div>
+        <h3 class="aai-title">西岸中环汇 · 3号楼 9001室</h3>
+        <div class="aai-addr">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2C6 2 4 4 4 7C4 11 9 16 9 16C9 16 14 11 14 7C14 4 12 2 9 2Z" stroke="#4a7c59" stroke-width="1.5"/><circle cx="9" cy="7" r="2" stroke="#4a7c59" stroke-width="1.5"/></svg>
+          <span>上海市徐汇区大木桥路899弄3号</span>
+        </div>
+        <div class="aai-details">
+          <div class="aai-row"><span class="aai-label">楼栋</span><span class="aai-value">3号楼</span></div>
+          <div class="aai-row"><span class="aai-label">房号</span><span class="aai-value">9001室</span></div>
+          <div class="aai-row"><span class="aai-label">建筑面积</span><span class="aai-value">46平方米</span></div>
+          <div class="aai-row"><span class="aai-label">户型</span><span class="aai-value">一室一厅一厨一卫（含衣帽间）</span></div>
+          <div class="aai-row"><span class="aai-label">申请人</span><span class="aai-value">刘力</span></div>
+          <div class="aai-row"><span class="aai-label">申请企业</span><span class="aai-value">上海西嘻影视文化传媒有限公司</span></div>
+          <div class="aai-row"><span class="aai-label">企业负责人</span><span class="aai-value">杨菲<span class="di-note">（国家青年力量代表称号）</span></span></div>
+          <div class="aai-row"><span class="aai-label">交通</span><span class="aai-value">地铁7号线/12号线 龙华中路站 约300米</span></div>
+        </div>
+      </div>
+      <div class="apt-applied-map">
+        <iframe
+          src="https://uri.amap.com/marker?position=121.461500,31.198500&name=大木桥路899弄3号&coordinate=wgs84&callnative=1"
+          width="100%" height="100%" frameborder="0"
+          style="border:0;border-radius:16px"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+    <!-- Floor plans -->
+    <div class="floorplan-section">
+      <h3 class="detail-title"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="12" rx="1" stroke="#4a7c59" stroke-width="1.5"/><path d="M3 9H17M10 5V17" stroke="#4a7c59" stroke-width="1.2"/></svg> 房型图</h3>
+      <div class="floorplan-grid">
+        <div class="fp-item"><img src="public/floorplan/plan1.jpg" alt="房型图1" loading="lazy"></div>
+        <div class="fp-item"><img src="public/floorplan/plan2.jpg" alt="房型图2" loading="lazy"></div>
+        <div class="fp-item"><img src="public/floorplan/plan3.jpg" alt="房型图3" loading="lazy"></div>
+        <div class="fp-item"><img src="public/floorplan/plan4.jpg" alt="房型图4" loading="lazy"></div>
+      </div>
+    </div>
+    <!-- Contract signing -->
+    <div class="contract-section">
+      <h3 class="detail-title"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 2H13L17 6V18H5V2Z" stroke="#4a7c59" stroke-width="1.5"/><path d="M13 2V6H17" stroke="#4a7c59" stroke-width="1.5"/><path d="M8 11H14M8 14H12" stroke="#4a7c59" stroke-width="1.2"/></svg> 租赁合同签署</h3>
+      <div class="contract-flow" id="contractFlow">
+        <!-- Step 1: Read contract -->
+        <div class="cf-step active" data-cs="1">
+          <p class="cf-desc">请仔细阅读《上海市保障性租赁住房租赁合同》全文，阅读完成后可进行签约。</p>
+          <div class="contract-viewer">
+            <iframe src="public/lease_contract.pdf#view=FitH&toolbar=1" width="100%" height="500px" frameborder="0" style="border:1px solid var(--border-2);border-radius:12px"></iframe>
+          </div>
+          <div class="cf-check-row">
+            <label class="cf-check"><input type="checkbox" id="contractRead"> <span>我已阅读并理解合同全部内容</span></label>
+          </div>
+          <div class="cf-actions">
+            <button type="button" class="btn-primary" id="contractNextBtn" disabled>我已阅读，下一步</button>
+          </div>
+        </div>
+        <!-- Step 2: Confirm sign -->
+        <div class="cf-step" data-cs="2">
+          <div class="cf-confirm-box">
+            <h4>是否确认签约？</h4>
+            <p class="cf-desc">确认签约后，您将正式成为该房屋的承租人。请在下方输入您的姓名以确认签约。</p>
+            <div class="cf-sign-area">
+              <label for="signName">请输入您的姓名</label>
+              <input type="text" id="signName" placeholder="请输入您的真实姓名">
+              <span class="ff-err" id="signNameErr"></span>
+            </div>
+            <div class="cf-actions">
+              <button type="button" class="btn-ghost" id="contractPrevBtn">返回阅读</button>
+              <button type="button" class="btn-primary" id="contractSignBtn">确认签约</button>
+            </div>
+          </div>
+        </div>
+        <!-- Step 3: Signed -->
+        <div class="cf-step" data-cs="3">
+          <div class="cf-success-box">
+            <div class="success-icon" style="margin-bottom:20px"><svg width="72" height="72" viewBox="0 0 72 72" fill="none"><circle cx="36" cy="36" r="33" stroke="#4a7c59" stroke-width="3"/><path d="M22 36L32 46L50 28" stroke="#4a7c59" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>刘力 已签约完成</h3>
+            <p class="cf-notice">即日起请携带个人证件前往：<strong>大木桥路899弄3号西岸中环汇处</strong>进行线下录入相关信息。</p>
+            <div class="cf-signed-info">
+              <div class="aai-row"><span class="aai-label">签约人</span><span class="aai-value">刘力</span></div>
+              <div class="aai-row"><span class="aai-label">房屋部位</span><span class="aai-value">中环汇公寓 3号楼 9001室</span></div>
+              <div class="aai-row"><span class="aai-label">申请企业</span><span class="aai-value">上海西嘻影视文化传媒有限公司</span></div>
+              <div class="aai-row"><span class="aai-label">企业负责人</span><span class="aai-value">杨菲（国家青年力量代表称号）</span></div>
+              <div class="aai-row"><span class="aai-label">签约时间</span><span class="aai-value" id="signTime">—</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <div class="container">
+    <div class="section-head-center">
+      <span class="eyebrow">COMMUNITY · 社区资讯</span>
+      <h2 class="section-title">物业公告</h2>
+      <p class="section-lead">了解小区最新动态</p>
+    </div>
+    <div class="community-list">
+      <div class="comm-item">
+        <div class="comm-date"><span class="comm-day">10</span><span class="comm-mon">NOV</span></div>
+        <div class="comm-body"><h3>11月绿化养护计划</h3><p>本周将进行小区中央庭院的秋季修剪与施肥工作，预计耗时3天，届时部分区域将临时围挡，请绕行。</p><span class="comm-from">物业服务中心</span></div>
+      </div>
+      <div class="comm-item">
+        <div class="comm-date"><span class="comm-day">05</span><span class="comm-mon">NOV</span></div>
+        <div class="comm-body"><h3>电梯年检通知</h3><p>2号楼1号电梯将于11月8日9:00-12:00进行年度检修，届时请使用2号电梯或楼梯出行。</p><span class="comm-from">工程部</span></div>
+      </div>
+      <div class="comm-item">
+        <div class="comm-date"><span class="comm-day">01</span><span class="comm-mon">NOV</span></div>
+        <div class="comm-body"><h3>冬季供暖启动</h3><p>小区中央空调供暖系统已于11月1日正式启动，室内温度设定为22°C。如需调节请联系物业前台。</p><span class="comm-from">物业服务中心</span></div>
+      </div>
+      <div class="comm-item">
+        <div class="comm-date"><span class="comm-day">28</span><span class="comm-mon">OCT</span></div>
+        <div class="comm-body"><h3>万圣节社区活动回顾</h3><p>感谢各位住户参与上周六的社区万圣节派对，照片已上传至业主群相册，期待下次活动再聚！</p><span class="comm-from">社区运营</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section faq" id="faq">
+  <div class="container">
+    <div class="section-head-center">
+      <span class="eyebrow">FAQ · 常见问题</span>
+      <h2 class="section-title">居住指南</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item"><button class="faq-q" aria-expanded="false"><span>如何缴纳房租？</span><span class="faq-ic"></span></button><div class="faq-a"><p>您可以通过"我的签约"页面在线缴纳，也可前往物业前台使用银行卡或移动支付缴纳。建议使用在线缴费，方便快捷且可随时查看记录。</p></div></div>
+      <div class="faq-item"><button class="faq-q" aria-expanded="false"><span>租期到了如何续约？</span><span class="faq-ic"></span></button><div class="faq-a"><p>请在租期到期前60天联系物业前台或登录本平台提交续约申请，物业将根据房源情况与您确认续约事宜。</p></div></div>
+      <div class="faq-item"><button class="faq-q" aria-expanded="false"><span>报修流程是什么？</span><span class="faq-ic"></span></button><div class="faq-a"><p>您可以通过物业前台电话（021-64872222 转 1503）或前往1号楼物业中心报修。维修师傅将在30分钟内上门处理。紧急维修24小时受理。</p></div></div>
+      <div class="faq-item"><button class="faq-q" aria-expanded="false"><span>快递和外卖怎么收？</span><span class="faq-ic"></span></button><div class="faq-a"><p>每栋楼大堂设有智能快递柜，支持24小时自助取件。外卖请至各楼栋外卖暂存架领取，建议及时取走以免遗失。</p></div></div>
+      <div class="faq-item"><button class="faq-q" aria-expanded="false"><span>访客如何进入小区？</span><span class="faq-ic"></span></button><div class="faq-a"><p>访客需在小区入口处登记身份信息，住户可通过物业前台或业主群提前报备访客。夜间（22:00后）访客需住户确认后方可进入。</p></div></div>
+      <div class="faq-item"><button class="faq-q" aria-expanded="false"><span>停车位如何申请？</span><span class="faq-ic"></span></button><div class="faq-a"><p>地下停车场提供月租车位，请联系物业前台咨询空位情况并办理。月租费用为600元/月，先到先得。</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <svg width="34" height="34" viewBox="0 0 34 34" fill="none" style="margin-bottom:12px"><path d="M17 3L27 13V25C27 27 25 29 23 29H11C9 29 7 27 7 25V13L17 3Z" stroke="#fff" stroke-width="2" fill="none" opacity="0.6"/><path d="M17 14V8M14 11L17 8L20 11" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.6"/></svg>
+        <span class="footer-title">Central Residences West Band (Shanghai)</span>
+        <p>西岸中环汇 · 安居西岸，诗意栖居</p>
+        <div class="footer-contact">
+          <div><span>物业电话</span>021-64872222 转 1503</div>
+          <div><span>邮箱</span>rencai@xh.sh.cn</div>
+          <div><span>地址</span>漕溪北路366号1号楼1421室</div>
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="#about">小区概览</a><a href="#apartments">房源一览</a><a href="#lease">我的签约</a><a href="#community">社区资讯</a><a href="#faq">常见问题</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>本页面为模拟展示，实际信息以物业服务中心公布为准</span>
+      <span>Central Residences West Bund (Shanghai)</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

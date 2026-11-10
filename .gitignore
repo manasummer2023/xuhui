@@ -1,0 +1,4 @@
+.aionclaw-tmp/
+__pycache__/
+.DS_Store
+*.pyc
