@@ -8,8 +8,28 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
+<script>document.documentElement.style.background='#0d0e10'</script>
+<style>#signedLanding~*{display:none!important}body{background:#0d0e10!important}</style>
 </head>
 <body>
+
+<!-- ===== Signed Landing Page (shown immediately) ===== -->
+<div id="signedLanding" style="position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#0d0e10 0%,#141518 50%,#1c1d22 100%);color:#fff;font-family:'Noto Sans SC','Outfit',sans-serif;padding:24px;overflow-y:auto">
+  <div style="max-width:640px;width:100%;text-align:center">
+    <div style="margin-bottom:28px"><svg width="80" height="80" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="36" stroke="#c8a45c" stroke-width="3"/><path d="M24 40L36 52L56 30" stroke="#c8a45c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h1 style="font-family:'Noto Serif SC',serif;font-size:32px;font-weight:700;color:#e8c87a;margin-bottom:20px">刘力 已签约完成</h1>
+    <p style="font-size:16px;line-height:2;color:#c8c9cc;margin-bottom:32px">即日起请携带个人证件前往：<br><strong style="color:#e8c87a">大木桥路899弄3号西岸中环汇处</strong><br>进行线下录入相关信息</p>
+    <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(200,164,92,0.3);border-radius:16px;padding:28px;text-align:left;backdrop-filter:blur(10px)">
+      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08)"><span style="color:#888;font-size:14px">签约人</span><span style="color:#fff;font-size:14px">刘力</span></div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08)"><span style="color:#888;font-size:14px">房屋部位</span><span style="color:#fff;font-size:14px">中环汇公寓 3号楼 9001室</span></div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08)"><span style="color:#888;font-size:14px">建筑面积</span><span style="color:#fff;font-size:14px">46平方米</span></div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08)"><span style="color:#888;font-size:14px">户型</span><span style="color:#fff;font-size:14px">一室一厅一厨一卫（含衣帽间）</span></div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08)"><span style="color:#888;font-size:14px">申请企业</span><span style="color:#fff;font-size:14px">上海西嘻影视文化传媒有限公司</span></div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08)"><span style="color:#888;font-size:14px">企业负责人</span><span style="color:#fff;font-size:14px">杨菲（国家青年力量代表称号）</span></div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0"><span style="color:#888;font-size:14px">签约时间</span><span style="color:#fff;font-size:14px" id="landingSignTime">—</span></div>
+    </div>
+  </div>
+</div>
 
 <!-- Floating leaves -->
 <div class="leaves-layer" id="leavesLayer"></div>
