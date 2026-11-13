@@ -156,7 +156,7 @@
     verified=true;
     if(modal)modal.classList.remove('open');
     if(accountBtn){accountBtn.classList.add('verified');}
-    if(accountLabel)accountLabel.textContent='刘力 ✓';
+    if(accountLabel)accountLabel.textContent='艾文杰 ✓';
     var top=document.getElementById('lease');
     if(top)top.scrollIntoView({behavior:'smooth',block:'start'});
   });
@@ -197,7 +197,7 @@
   if(signBtn)signBtn.addEventListener('click',function(){
     var name=signInput.value.trim();
     if(!name){signErr.textContent='请输入您的姓名';signInput.style.borderColor='var(--berry)';return;}
-    if(name!=='刘力'){signErr.textContent='姓名与申请人不一致，请确认';signInput.style.borderColor='var(--berry)';return;}
+    if(name!=='艾文杰'){signErr.textContent='姓名与申请人不一致，请确认';signInput.style.borderColor='var(--berry)';return;}
     signErr.textContent='';
     // Set sign time
     var now=new Date();
