@@ -185,33 +185,18 @@ img{max-width:100%;display:block}
 .proc-time{display:inline-block;font-size:11px;color:var(--forest);background:rgba(200,164,92,.08);padding:3px 10px;border-radius:6px;font-weight:600}
 
 /* ===== Apartments ===== */
-.apt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.apt-card{background:var(--cream);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;transition:all .4s var(--ease);box-shadow:var(--shadow)}
-.apt-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
-.apt-featured{border-color:var(--forest-light)}
-.apt-visual{height:200px;position:relative;overflow:hidden}
-.apt-v1{background:linear-gradient(135deg,#6b9b7a,#4a7c59)}
-.apt-v2{background:linear-gradient(135deg,#7ba8c0,#5a8a9e)}
-.apt-v3{background:linear-gradient(135deg,#d4b896,#b8966c)}
-.apt-visual::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 70%,rgba(255,255,255,.1),transparent 50%)}
-.apt-visual::before{content:'';position:absolute;bottom:0;left:0;right:0;height:40%;background:
-  radial-gradient(ellipse 40px 60px at 15% 100%,var(--forest-deep) 40%,transparent 41%),
-  radial-gradient(ellipse 35px 50px at 85% 100%,var(--forest-deep) 40%,transparent 41%),
-  linear-gradient(180deg,transparent,var(--forest-deep) 50%);
-  opacity:.6}
-.apt-overlay{position:absolute;top:14px;right:14px;z-index:1}
-.apt-status{display:inline-block;padding:4px 12px;background:rgba(255,255,255,.85);backdrop-filter:blur(10px);border:1px solid var(--border-2);border-radius:100px;font-size:11px;font-weight:600;color:var(--forest);letter-spacing:.03em}
-.apt-status-sold{background:rgba(160,80,106,.12);border:1px solid rgba(160,80,106,.3);color:var(--berry)}
-.apt-card:has(.apt-status-sold){opacity:.7}
-.apt-card:has(.apt-status-sold):hover{transform:none}
-.apt-info{padding:22px}
-.apt-loc{font-size:12px;color:var(--forest);font-weight:600;letter-spacing:.05em;margin-bottom:6px}
-.apt-info h3{font-family:var(--font-serif);font-size:19px;font-weight:700;margin-bottom:10px;color:var(--ink)}
-.apt-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-2);margin-bottom:10px}
-.apt-info p{font-size:13px;color:var(--ink-2);line-height:1.6;margin-bottom:14px}
-.apt-tags{display:flex;flex-wrap:wrap;gap:6px}
-.apt-tags span{font-size:11px;padding:4px 10px;background:rgba(200,164,92,.06);border:1px solid var(--border);border-radius:6px;color:var(--ink-2)}
-.apt-notice{text-align:center;font-size:13px;color:var(--ink-3);margin-top:36px}
+/* ===== Digital & Cultural Construction ===== */
+.digital-block{margin-bottom:48px}
+.digital-block:last-child{margin-bottom:0}
+.digital-sub-title{font-family:var(--font-serif);font-size:20px;font-weight:700;color:var(--forest-deep);margin-bottom:24px;display:flex;align-items:center;gap:10px}
+.digital-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.digital-card{background:var(--cream);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;transition:all .4s var(--ease);box-shadow:var(--shadow)}
+.digital-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--forest-light)}
+.dc-icon{width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:rgba(200,164,92,.08);border-radius:12px;margin-bottom:16px}
+.digital-card h4{font-family:var(--font-serif);font-size:17px;font-weight:700;color:var(--ink);margin-bottom:10px}
+.digital-card p{font-size:13px;color:var(--ink-2);line-height:1.7;margin-bottom:14px}
+.dc-tags{display:flex;flex-wrap:wrap;gap:6px}
+.dc-tags span{font-size:11px;padding:4px 10px;background:rgba(200,164,92,.06);border:1px solid var(--border);border-radius:6px;color:var(--ink-2)}
 
 /* ===== Form ===== */
 .form-shell{background:var(--cream);border:1px solid var(--border);border-radius:var(--radius-lg);padding:40px;max-width:880px;margin:0 auto;box-shadow:var(--shadow-lg)}
@@ -486,7 +471,7 @@ img{max-width:100%;display:block}
   .bento-wide{grid-column:span 2}
   .elig-layout{grid-template-columns:1fr;gap:32px}
   .process-grid{grid-template-columns:repeat(2,1fr)}
-  .apt-grid{grid-template-columns:repeat(2,1fr)}
+  .digital-grid{grid-template-columns:1fr}
 }
 @media(max-width:768px){
   .section{padding:64px 0}
@@ -504,7 +489,7 @@ img{max-width:100%;display:block}
   .bento-grid{grid-template-columns:1fr}
   .bento-wide{grid-column:span 1}
   .process-grid{grid-template-columns:1fr}
-  .apt-grid{grid-template-columns:1fr}
+  .digital-grid{grid-template-columns:1fr}
   .ff-grid{grid-template-columns:1fr}
   .form-shell{padding:24px 20px}
   .cs-grid{grid-template-columns:1fr}
