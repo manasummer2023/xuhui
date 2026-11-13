@@ -20,8 +20,8 @@
 (function(){
   var layer=document.getElementById('leavesLayer');
   if(!layer)return;
-  var colors=['#4a7c59','#7ba88a','#d4b896','#c4956c','#8dba6b'];
-  var leafSVG='<svg viewBox="0 0 20 20" fill="none"><path d="M10 2C6 2 3 5 3 9C3 14 7 18 10 18C13 18 17 14 17 9C17 5 14 2 10 2Z" fill="COLOR" opacity="0.7"/><path d="M10 2V18" stroke="COLOR" stroke-width="0.5" opacity="0.4"/></svg>';
+  var colors=['#d4a843','#e8c87a','#c8a45c','#d4b896','#e8b86d'];
+  var leafSVG='<svg viewBox="0 0 20 20" fill="none"><path d="M10 18C10 18 4 14 4 9C4 5 7 2 10 2C13 2 16 5 16 9C16 14 10 18 10 18Z" fill="COLOR" opacity="0.7"/><path d="M10 2V18" stroke="COLOR" stroke-width="0.5" opacity="0.4"/><path d="M7 6C8 7 9 8 10 8M13 6C12 7 11 8 10 8M7 10C8 11 9 12 10 12M13 10C12 11 11 12 10 12" stroke="COLOR" stroke-width="0.3" opacity="0.3"/></svg>';
   function createLeaf(){
     var leaf=document.createElement('div');
     leaf.className='leaf';
