@@ -216,21 +216,6 @@
   });
 })();
 
-// ===== Signed Landing Page =====
-(function(){
-  var landing=document.getElementById('signedLanding');
-  if(!landing)return;
-  // Set sign time
-  var now=new Date();
-  var ts=now.getFullYear()+'年'+(now.getMonth()+1)+'月'+now.getDate()+'日 '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
-  var stEl=document.getElementById('landingSignTime');
-  if(stEl)stEl.textContent=ts;
-  // Hide all body children except the landing page
-  Array.prototype.forEach.call(document.body.children,function(el){
-    if(el!==landing)el.style.display='none';
-  });
-})();
-
 // ===== Resume Upload & Job Push =====
 (function(){
   // Resume upload
