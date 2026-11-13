@@ -11,6 +11,52 @@
 </head>
 <body>
 
+<!-- ===== Auth Gate (must verify before seeing page) ===== -->
+<div class="auth-gate" id="authGate">
+  <div class="auth-gate-box">
+    <div class="auth-gate-logo">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 4L36 14V34C36 37 33 40 30 40H18C15 40 12 37 12 34V14L24 4Z" stroke="#c8a45c" stroke-width="2.5" fill="none"/><path d="M17 27C17 23 20 20 24 20C28 20 31 23 31 27V40H17V27Z" fill="#c8a45c" opacity="0.2"/></svg>
+      <h2 style="font-family:var(--font-serif);font-size:20px;font-weight:700;color:#c8a45c;margin-top:12px">城开・汇社区</h2>
+      <p style="font-size:12px;color:#8a8a8a;margin-top:4px">CCB 建融家园｜徐汇人才公寓</p>
+    </div>
+
+    <!-- Step 1: Account login -->
+    <div class="auth-step active" data-as="1">
+      <h3 style="font-family:var(--font-serif);font-size:16px;font-weight:600;color:#e8c87a;margin-bottom:8px">住户登录</h3>
+      <p style="font-size:13px;color:#999;margin-bottom:24px">请输入账户信息以继续</p>
+      <div class="account-form">
+        <div class="af-row"><label style="color:#c8a45c">账户名称</label><input type="text" id="loginName" value="艾文杰" readonly style="background:rgba(255,255,255,0.03)"></div>
+        <div class="af-row"><label style="color:#c8a45c">账户编号</label><input type="text" id="loginId" placeholder="请输入账户编号（身份证后六位）" maxlength="6" style="background:rgba(255,255,255,0.05)" autocomplete="off"><span class="ff-err" id="loginIdErr" style="color:#e07060"></span></div>
+        <button type="button" class="btn-primary" data-as-next id="accountNextBtn" style="width:100%;margin-top:8px">下一步：人脸识别</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Video verification -->
+    <div class="auth-step" data-as="2">
+      <h3 style="font-family:var(--font-serif);font-size:16px;font-weight:600;color:#e8c87a;margin-bottom:8px">人脸识别</h3>
+      <p style="font-size:13px;color:#999;margin-bottom:16px">请将面部置于画面中央，点击拍照完成验证</p>
+      <div class="video-wrap" id="videoWrap" style="border-radius:12px;overflow:hidden">
+        <video id="verifyVideo" autoplay playsinline></video>
+        <div class="video-overlay" id="videoOverlay"><div class="face-guide"></div></div>
+        <div class="video-status" id="videoStatus">正在启动摄像头…</div>
+      </div>
+      <div class="verify-actions" style="margin-top:16px;display:flex;gap:12px">
+        <button type="button" class="btn-ghost" data-as-prev style="flex:1">上一步</button>
+        <button type="button" class="btn-primary" id="startVerifyBtn" style="flex:1">拍照</button>
+        <button type="button" class="btn-primary" id="verifyPassBtn" style="flex:1;display:none">确认进入</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Success -->
+    <div class="auth-step" data-as="3">
+      <div class="success-icon" style="margin-bottom:16px"><svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="29" stroke="#c8a45c" stroke-width="3"/><path d="M20 32L28 40L44 24" stroke="#c8a45c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h3 style="font-family:var(--font-serif);font-size:18px;font-weight:600;color:#e8c87a;margin-bottom:8px">识别成功</h3>
+      <p style="font-size:14px;color:#ccc;margin-bottom:24px">欢迎回家，<strong style="color:#e8c87a">艾文杰</strong>，人脸验证已通过</p>
+      <button type="button" class="btn-primary" id="enterApplyBtn" style="width:100%">进入查看</button>
+    </div>
+  </div>
+</div>
+
 <!-- Floating leaves -->
 <div class="leaves-layer" id="leavesLayer"></div>
 
@@ -41,43 +87,6 @@
     <button class="nav-toggle" id="navToggle"><span></span><span></span></button>
   </div>
 </nav>
-
-<!-- Account / Video Verification Modal -->
-<div class="modal-overlay" id="accountModal">
-  <div class="modal-box">
-    <button class="modal-close" id="modalClose">&times;</button>
-    <div class="modal-step active" data-ms="1">
-      <div class="modal-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="16" r="8" stroke="#4a7c59" stroke-width="2.5"/><path d="M8 42C8 34 15 29 24 29C33 29 40 34 40 42" stroke="#4a7c59" stroke-width="2.5"/></svg></div>
-      <h3 class="modal-title">住户登录</h3>
-      <p class="modal-desc">请确认账户信息，进行人脸识别后进入</p>
-      <div class="account-form">
-        <div class="af-row"><label>账户名称</label><input type="text" id="loginName" value="艾文杰" readonly></div>
-        <div class="af-row"><label>账户编号</label><input type="text" id="loginId" value="S20001220BR" readonly></div>
-        <button type="button" class="btn-primary modal-next" data-ms-next>下一步：人脸识别</button>
-      </div>
-    </div>
-    <div class="modal-step" data-ms="2">
-      <h3 class="modal-title">人脸识别</h3>
-      <p class="modal-desc">请将面部置于画面中央，点击拍照完成验证</p>
-      <div class="video-wrap" id="videoWrap">
-        <video id="verifyVideo" autoplay playsinline></video>
-        <div class="video-overlay" id="videoOverlay"><div class="face-guide"></div></div>
-        <div class="video-status" id="videoStatus">正在启动摄像头…</div>
-      </div>
-      <div class="verify-actions">
-        <button type="button" class="btn-ghost" data-ms-prev>上一步</button>
-        <button type="button" class="btn-primary" id="startVerifyBtn">拍照</button>
-        <button type="button" class="btn-primary" id="verifyPassBtn" style="display:none;">确认进入</button>
-      </div>
-    </div>
-    <div class="modal-step" data-ms="3">
-      <div class="success-icon" style="margin-bottom:20px"><svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="29" stroke="#4a7c59" stroke-width="3"/><path d="M20 32L28 40L44 24" stroke="#4a7c59" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <h3 class="modal-title">识别成功</h3>
-      <p class="modal-desc">欢迎回家，<strong>艾文杰</strong>，人脸验证已通过</p>
-      <button type="button" class="btn-primary" id="enterApplyBtn">进入查看</button>
-    </div>
-  </div>
-</div>
 
 <!-- Hero -->
 <section class="hero" id="hero">
@@ -234,14 +243,14 @@
           </div>
           <div class="profile-head-info">
             <h3>艾文杰</h3>
-            <span class="profile-id">账户编号：S20001220BR</span>
+            <span class="profile-id">账户编号：CH0091056R</span>
           </div>
           <span class="lease-status">已认证</span>
         </div>
         <div class="lease-detail">
           <div class="ld-row"><span class="ld-label">姓名</span><span class="ld-value">艾文杰</span></div>
           <div class="ld-row"><span class="ld-label">学历</span><span class="ld-value ld-highlight">硕士</span></div>
-          <div class="ld-row"><span class="ld-label">账户编号</span><span class="ld-value">S20001220BR</span></div>
+          <div class="ld-row"><span class="ld-label">账户编号</span><span class="ld-value">CH0091056R</span></div>
           <div class="ld-row"><span class="ld-label">认证状态</span><span class="ld-value"><span class="verified-badge">已人脸识别</span></span></div>
         </div>
       </div>
@@ -280,91 +289,135 @@
         <div class="detail-item"><span class="di-label">联系电话</span><span class="di-value di-mono">18104502600</span></div>
       </div>
     </div>
-    <!-- Job recommendations -->
+    <!-- Live streaming base support policies -->
     <div class="job-section">
       <div class="job-section-head">
-        <h3 class="detail-title"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="6" width="14" height="11" rx="1.5" stroke="#4a7c59" stroke-width="1.5"/><path d="M7 6V4C7 3 8 2 9 2H11C12 2 13 3 13 4V6" stroke="#4a7c59" stroke-width="1.5"/><path d="M3 11H17" stroke="#4a7c59" stroke-width="1.2"/></svg> 待业推荐岗位</h3>
-        <p class="job-section-desc">根据您的个人简历，为您推荐以下岗位。可上传简历并直接推送至用人单位。</p>
+        <h3 class="detail-title"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="11" rx="1.5" stroke="#4a7c59" stroke-width="1.5"/><path d="M7 5V3C7 2 8 1 9 1H11C12 1 13 2 13 3V5" stroke="#4a7c59" stroke-width="1.5"/><circle cx="10" cy="10" r="2.5" fill="#4a7c59" opacity="0.3"/></svg> 上海直播基地扶持政策</h3>
+        <p class="job-section-desc">市级：无普惠现金补贴，提供<strong>上海市直播电商基地</strong>认定资质，拿到资质后方可申报各区奖励；补贴均为<strong>项目制、事后奖补</strong>。</p>
       </div>
-      <div class="job-list">
-        <!-- Job 1 -->
-        <div class="job-card">
-          <div class="job-card-head">
-            <div class="job-num">1</div>
-            <div class="job-title-area"><h4>上海交通大学国际与公共事务服务中心</h4><span class="job-role">波兰语教授助理 · 1名</span></div>
-            <div class="job-salary">15,000<span class="job-salary-unit">元/月</span></div>
+      <div class="policy-list">
+        <!-- 1. 松江区 -->
+        <div class="policy-card">
+          <div class="policy-card-head">
+            <div class="policy-num">1</div>
+            <div class="policy-title-area"><h4>松江区</h4><span class="policy-tag">产销实体直播基地</span></div>
+            <span class="policy-amount">最高 200 万</span>
           </div>
-          <div class="job-card-body">
-            <p class="job-desc">重点培养公共管理学、政治学、国家安全学三个一级学科博士点。</p>
-            <div class="job-meta-row">
-              <span class="job-meta-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="#7ba88a" stroke-width="1.2"/><path d="M7 4V7L9 8" stroke="#7ba88a" stroke-width="1.2" stroke-linecap="round"/></svg> 全职</span>
-              <span class="job-meta-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="3" width="10" height="8" rx="1" stroke="#7ba88a" stroke-width="1.2"/><path d="M2 6H12" stroke="#7ba88a" stroke-width="1.2"/></svg> 按国家校务系统休假</span>
-            </div>
-          </div>
-          <div class="job-card-foot">
-            <div class="job-upload-area">
-              <input type="file" id="resume-1" accept=".pdf,.doc,.docx" class="resume-input">
-              <label for="resume-1" class="ul-btn">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2V10M7 2L4 5M7 2L10 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12H12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-                <span class="resume-label-text" data-job="1">上传简历</span>
-              </label>
-              <span class="resume-status" id="resume-status-1">未上传</span>
-            </div>
-            <button class="btn-primary job-push-btn" data-job="1" data-name="上海交通大学国际与公共事务服务中心">推送简历</button>
+          <div class="policy-card-body">
+            <p class="policy-core"><strong>核心：认定一次性奖励</strong></p>
+            <ul class="policy-points">
+              <li>获评上海市直播电商基地：一次性 <strong>60 万</strong>；国家级示范基地 <strong>80 万</strong></li>
+              <li>直播集聚载体项目最高 <strong>200 万</strong>支持</li>
+              <li class="policy-loc">定位：G60，实体货品、工厂溯源、国货供应链直播</li>
+            </ul>
           </div>
         </div>
-        <!-- Job 2 -->
-        <div class="job-card">
-          <div class="job-card-head">
-            <div class="job-num">2</div>
-            <div class="job-title-area"><h4>上海市森林国家管理局</h4><span class="job-role">波兰语植物翻译 · 3名</span></div>
-            <div class="job-salary">12,000<span class="job-salary-unit">元/月</span></div>
+        <!-- 2. 杨浦区 -->
+        <div class="policy-card policy-featured">
+          <div class="policy-card-head">
+            <div class="policy-num policy-num-hot">2</div>
+            <div class="policy-title-area"><h4>杨浦区</h4><span class="policy-tag">内容 MCN / 短视频直播基地</span></div>
+            <span class="policy-amount policy-amount-hot">最高 200 万</span>
           </div>
-          <div class="job-card-body">
-            <p class="job-desc">负责植物学相关文献的波兰语翻译工作。</p>
-            <div class="job-meta-row">
-              <span class="job-meta-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="3" width="10" height="8" rx="1" stroke="#7ba88a" stroke-width="1.2"/><path d="M2 6H12" stroke="#7ba88a" stroke-width="1.2"/></svg> 按公务系统休假安排</span>
-              <span class="job-meta-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="#7ba88a" stroke-width="1.2"/><path d="M7 4V10M4 7H10" stroke="#7ba88a" stroke-width="1.2" stroke-linecap="round"/></svg> 即岗</span>
-            </div>
-          </div>
-          <div class="job-card-foot">
-            <div class="job-upload-area">
-              <input type="file" id="resume-2" accept=".pdf,.doc,.docx" class="resume-input">
-              <label for="resume-2" class="ul-btn">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2V10M7 2L4 5M7 2L10 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12H12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-                <span class="resume-label-text" data-job="2">上传简历</span>
-              </label>
-              <span class="resume-status" id="resume-status-2">未上传</span>
-            </div>
-            <button class="btn-primary job-push-btn" data-job="2" data-name="上海市森林国家管理局">推送简历</button>
+          <div class="policy-card-body">
+            <p class="policy-core"><strong>核心：房租减免 + 直播间补贴 + 顶级人才</strong></p>
+            <ul class="policy-points">
+              <li>载体物业：首年全免，第 2 年 75%、第 3 年 50% 减免</li>
+              <li>杨浦直播券：直播间场景补贴，单企业年度上限 <strong>50 万</strong></li>
+              <li>产业活动补贴最高 <strong>200 万</strong>；优质创作者落户、购房补贴最高 <strong>200 万</strong></li>
+              <li class="policy-loc">定位：五角场 + 滨江，MCN、短视频、品牌内容孵化</li>
+            </ul>
           </div>
         </div>
-        <!-- Job 3 -->
-        <div class="job-card">
-          <div class="job-card-head">
-            <div class="job-num job-num-hot">3</div>
-            <div class="job-title-area"><h4>上海云想科技国际商务中心</h4><span class="job-role">波兰语策划师 · 1名</span></div>
-            <div class="job-salary job-salary-hot">35,000<span class="job-salary-unit">元/月</span></div>
+        <!-- 3. 嘉定区 -->
+        <div class="policy-card">
+          <div class="policy-card-head">
+            <div class="policy-num">3</div>
+            <div class="policy-title-area"><h4>嘉定区</h4><span class="policy-tag">短视频 + 直播产业园区</span></div>
+            <span class="policy-amount">最高 200 万</span>
           </div>
-          <div class="job-card-body">
-            <p class="job-desc">负责国际旅游项目的波兰语策划与执行工作。</p>
-            <div class="job-meta-row">
-              <span class="job-meta-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="3" width="10" height="8" rx="1" stroke="#7ba88a" stroke-width="1.2"/><path d="M2 6H12" stroke="#7ba88a" stroke-width="1.2"/></svg> 按国家法定系统安排</span>
-              <span class="job-meta-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="#7ba88a" stroke-width="1.2"/><path d="M7 4V10M4 7H10" stroke="#7ba88a" stroke-width="1.2" stroke-linecap="round"/></svg> 即岗</span>
-            </div>
-          </div>
-          <div class="job-card-foot">
-            <div class="job-upload-area">
-              <input type="file" id="resume-3" accept=".pdf,.doc,.docx" class="resume-input">
-              <label for="resume-3" class="ul-btn">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2V10M7 2L4 5M7 2L10 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12H12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-                <span class="resume-label-text" data-job="3">上传简历</span>
-              </label>
-              <span class="resume-status" id="resume-status-3">未上传</span>
-            </div>
-            <button class="btn-primary job-push-btn" data-job="3" data-name="上海云想科技国际商务中心">推送简历</button>
+          <div class="policy-card-body">
+            <p class="policy-core"><strong>核心：园区认定 + 企业营收阶梯奖励</strong></p>
+            <ul class="policy-points">
+              <li>新增认定市级特色园区一次性 <strong>200 万</strong>；市级直播示范基地 <strong>50 万</strong>；国家级 <strong>100 万</strong></li>
+              <li>区内直播企业营收破 1亿 / 3亿 / 5亿，分别奖励 <strong>80 / 100 / 200 万</strong></li>
+              <li class="policy-loc">定位：短视频产业集群、汽车 / 工业品直播</li>
+            </ul>
           </div>
         </div>
+        <!-- 4. 虹桥 -->
+        <div class="policy-card">
+          <div class="policy-card-head">
+            <div class="policy-num">4</div>
+            <div class="policy-title-area"><h4>虹桥国际中央商务区</h4><span class="policy-tag">跨境选品直播基地</span></div>
+            <span class="policy-amount">融资贴息 + 担保</span>
+          </div>
+          <div class="policy-card-body">
+            <p class="policy-core"><strong>核心：跨境直播、品牌出海</strong></p>
+            <ul class="policy-points">
+              <li>长三角选品中心，融资贴息、担保支持</li>
+              <li>重点扶持跨境直播、海外品牌带货项目</li>
+              <li class="policy-loc">定位：进博会溢出，进出口货盘、跨境供应链</li>
+            </ul>
+          </div>
+        </div>
+        <!-- 5. 临港 -->
+        <div class="policy-card">
+          <div class="policy-card-head">
+            <div class="policy-num">5</div>
+            <div class="policy-title-area"><h4>临港新片区</h4><span class="policy-tag">海外投流 / 跨境直播</span></div>
+            <span class="policy-amount">最高 300 万</span>
+          </div>
+          <div class="policy-card-body">
+            <p class="policy-core"><strong>核心：海外数字营销、跨境内容</strong></p>
+            <ul class="policy-points">
+              <li>产业活动按投入 <strong>50%</strong>补贴，最高 <strong>300 万</strong></li>
+              <li>数字文化专项资金支持海外直播、短剧投流项目</li>
+              <li class="policy-loc">定位：跨境出海、海外短视频直播团队</li>
+            </ul>
+          </div>
+        </div>
+        <!-- 6. 长宁区 -->
+        <div class="policy-card">
+          <div class="policy-card-head">
+            <div class="policy-num">6</div>
+            <div class="policy-title-area"><h4>长宁区</h4><span class="policy-tag">时尚品牌店播、数字人直播</span></div>
+            <span class="policy-amount">最高 500 万</span>
+          </div>
+          <div class="policy-card-body">
+            <p class="policy-core"><strong>核心：品牌零售、AI 数字人直播</strong></p>
+            <ul class="policy-points">
+              <li>服务业引导资金支持基地公共平台建设，单个项目最高 <strong>500 万</strong></li>
+              <li>时尚消费直播场景，技能人才培训补贴</li>
+              <li class="policy-loc">定位：美妆服饰、品牌店播、数字人 AI 直播</li>
+            </ul>
+          </div>
+        </div>
+        <!-- 7. 闵行区 -->
+        <div class="policy-card">
+          <div class="policy-card-head">
+            <div class="policy-num">7</div>
+            <div class="policy-title-area"><h4>闵行区</h4><span class="policy-tag">轻资产小型直播空间</span></div>
+            <span class="policy-amount">专项申报</span>
+          </div>
+          <div class="policy-card-body">
+            <p class="policy-core"><strong>核心：存量园区改造、品牌线上融合</strong></p>
+            <ul class="policy-points">
+              <li>无直播专项大额现金奖励；可申报市级文创、消费新业态专项资金</li>
+              <li>侧重存量园区改造、品牌线上融合项目</li>
+              <li class="policy-loc">定位：适合轻资产小型直播空间</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- 申报要点 -->
+      <div class="policy-notice">
+        <h4>申报通用要点</h4>
+        <ol class="policy-notice-list">
+          <li><strong>主体：</strong>基地运营主体上海注册法人，具备直播间、选品、公共服务能力</li>
+          <li><strong>规则：</strong>先拿市级直播基地认定，再申报区级奖励；审计、GMV、入驻台账必备</li>
+          <li><strong>一票否决：</strong>虚假交易、税务、广告合规重大违规</li>
+        </ol>
       </div>
     </div>
   </div>
@@ -391,7 +444,7 @@
         </div>
         <div class="aai-details">
           <div class="aai-row"><span class="aai-label">部位</span><span class="aai-value">汇家・汇社区-7007</span></div>
-          <div class="aai-row"><span class="aai-label">建筑面积</span><span class="aai-value">90㎡</span></div>
+          <div class="aai-row"><span class="aai-label">建筑面积</span><span class="aai-value">95.1㎡</span></div>
           <div class="aai-row"><span class="aai-label">户型</span><span class="aai-value">三室两厅三卫</span></div>
           <div class="aai-row"><span class="aai-label">申请人</span><span class="aai-value">艾文杰</span></div>
           <div class="aai-row"><span class="aai-label">申请企业</span><span class="aai-value">云想科技有限公司</span></div>
@@ -410,12 +463,24 @@
     </div>
     <!-- Floor plans -->
     <div class="floorplan-section">
-      <h3 class="detail-title"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="12" rx="1" stroke="#4a7c59" stroke-width="1.5"/><path d="M3 9H17M10 5V17" stroke="#4a7c59" stroke-width="1.2"/></svg> 房型图</h3>
+      <h3 class="detail-title"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="12" rx="1" stroke="#4a7c59" stroke-width="1.5"/><path d="M3 9H17M10 5V17" stroke="#4a7c59" stroke-width="1.2"/></svg> 户型图</h3>
       <div class="floorplan-grid">
-        <div class="fp-item"><img src="public/floorplan/plan1.jpg" alt="房型图1" loading="lazy"></div>
-        <div class="fp-item"><img src="public/floorplan/plan2.jpg" alt="房型图2" loading="lazy"></div>
-        <div class="fp-item"><img src="public/floorplan/plan3.jpg" alt="房型图3" loading="lazy"></div>
-        <div class="fp-item"><img src="public/floorplan/plan4.jpg" alt="房型图4" loading="lazy"></div>
+        <div class="fp-item"><img src="public/floorplan/plan1.jpg" alt="户型图1" loading="lazy"></div>
+        <div class="fp-item"><img src="public/floorplan/plan2.jpg" alt="户型图2" loading="lazy"></div>
+        <div class="fp-item"><img src="public/floorplan/plan3.jpg" alt="户型图3" loading="lazy"></div>
+        <div class="fp-item"><img src="public/floorplan/plan4.jpg" alt="户型图4" loading="lazy"></div>
+        <div class="fp-item"><img src="public/floorplan/plan5.jpg" alt="户型图5" loading="lazy"></div>
+      </div>
+    </div>
+    <!-- Showroom -->
+    <div class="floorplan-section">
+      <h3 class="detail-title"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 7L10 3L17 7V16H3V7Z" stroke="#4a7c59" stroke-width="1.5" fill="none"/><path d="M8 16V11H12V16" stroke="#4a7c59" stroke-width="1.2"/></svg> 样板间装修示意</h3>
+      <div class="floorplan-grid">
+        <div class="fp-item"><img src="public/showroom/room1.jpg" alt="样板间1" loading="lazy"></div>
+        <div class="fp-item"><img src="public/showroom/room2.jpg" alt="样板间2" loading="lazy"></div>
+        <div class="fp-item"><img src="public/showroom/room3.jpg" alt="样板间3" loading="lazy"></div>
+        <div class="fp-item"><img src="public/showroom/room4.jpg" alt="样板间4" loading="lazy"></div>
+        <div class="fp-item"><img src="public/showroom/room5.jpg" alt="样板间5" loading="lazy"></div>
       </div>
     </div>
     <!-- Contract signing -->
@@ -476,20 +541,20 @@
     </div>
     <div class="community-list">
       <div class="comm-item">
+        <div class="comm-date"><span class="comm-day">13</span><span class="comm-mon">NOV</span></div>
+        <div class="comm-body"><h3>城开汇社区数字化平台上线公告</h3><p>社区智慧物业小程序已于今日正式上线，住户可通过微信搜索「城开汇社区」进入小程序，享受在线报修、电子缴费、访客预约、快递代收等全流程线上服务。首次登录需使用身份证号绑定账户。</p><span class="comm-from">物业服务中心</span></div>
+      </div>
+      <div class="comm-item">
         <div class="comm-date"><span class="comm-day">10</span><span class="comm-mon">NOV</span></div>
-        <div class="comm-body"><h3>11月绿化养护计划</h3><p>本周将进行小区中央庭院的秋季修剪与施肥工作，预计耗时3天，届时部分区域将临时围挡，请绕行。</p><span class="comm-from">物业服务中心</span></div>
+        <div class="comm-body"><h3>11月银杏文化节活动预告</h3><p>社区将于11月16日-17日举办首届银杏文化节，活动包括银杏主题摄影展、手作市集、露天电影放映及亲子银杏叶 DIY 工坊。欢迎住户踊跃参与，报名请联系物业前台或在小程序内预约。</p><span class="comm-from">社区运营</span></div>
+      </div>
+      <div class="comm-item">
+        <div class="comm-date"><span class="comm-day">08</span><span class="comm-mon">NOV</span></div>
+        <div class="comm-body"><h3>智能门禁系统升级通知</h3><p>为提升社区安全等级，人脸识别门禁系统将于11月10日-12日进行升级维护。升级期间部分门禁可能暂停使用，请住户随身携带实体门禁卡。升级完成后将支持小程序扫码开门功能。</p><span class="comm-from">工程部</span></div>
       </div>
       <div class="comm-item">
         <div class="comm-date"><span class="comm-day">05</span><span class="comm-mon">NOV</span></div>
-        <div class="comm-body"><h3>电梯年检通知</h3><p>2号楼1号电梯将于11月8日9:00-12:00进行年度检修，届时请使用2号电梯或楼梯出行。</p><span class="comm-from">工程部</span></div>
-      </div>
-      <div class="comm-item">
-        <div class="comm-date"><span class="comm-day">01</span><span class="comm-mon">NOV</span></div>
-        <div class="comm-body"><h3>冬季供暖启动</h3><p>小区中央空调供暖系统已于11月1日正式启动，室内温度设定为22°C。如需调节请联系物业前台。</p><span class="comm-from">物业服务中心</span></div>
-      </div>
-      <div class="comm-item">
-        <div class="comm-date"><span class="comm-day">28</span><span class="comm-mon">OCT</span></div>
-        <div class="comm-body"><h3>万圣节社区活动回顾</h3><p>感谢各位住户参与上周六的社区万圣节派对，照片已上传至业主群相册，期待下次活动再聚！</p><span class="comm-from">社区运营</span></div>
+        <div class="comm-body"><h3>冬季供暖系统启动通知</h3><p>小区中央空调供暖系统已于11月5日正式启动，室内温度设定为22°C。住户如需调节温度或报修供暖问题，请通过物业小程序提交或拨打前台电话 021-64872222 转 1503。</p><span class="comm-from">物业服务中心</span></div>
       </div>
     </div>
   </div>

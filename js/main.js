@@ -62,42 +62,28 @@
   });
 })();
 
-// ===== Account Login & Video Verification =====
+// ===== Auth Gate (must verify before seeing page) =====
 (function(){
-  var accountBtn=document.getElementById('accountBtn');
-  var modal=document.getElementById('accountModal');
-  var modalClose=document.getElementById('modalClose');
-  var steps=modal?modal.querySelectorAll('.modal-step'):[];
+  var gate=document.getElementById('authGate');
+  if(!gate)return;
+  var steps=gate.querySelectorAll('.auth-step');
   var video=document.getElementById('verifyVideo');
   var videoOverlay=document.getElementById('videoOverlay');
   var videoStatus=document.getElementById('videoStatus');
-  var scanLine=document.getElementById('scanLine');
   var startBtn=document.getElementById('startVerifyBtn');
   var passBtn=document.getElementById('verifyPassBtn');
   var enterBtn=document.getElementById('enterApplyBtn');
-  var accountLabel=document.getElementById('accountLabel');
+  var nextBtn=gate.querySelector('[data-as-next]');
+  var prevBtn=gate.querySelector('[data-as-prev]');
+  var loginIdInput=document.getElementById('loginId');
+  var loginIdErr=document.getElementById('loginIdErr');
   var stream=null;
-  var verified=false;
   var curStep=1;
 
-  function openModal(){
-    if(verified){
-      var top=document.getElementById('lease');
-      if(top)top.scrollIntoView({behavior:'smooth',block:'start'});
-      return;
-    }
-    if(modal)modal.classList.add('open');
-    showStep(1);
-  }
-  function closeModal(){
-    if(modal)modal.classList.remove('open');
-    stopCamera();
-    showStep(1);
-  }
   function showStep(n){
     curStep=n;
     steps.forEach(function(s){s.classList.remove('active');});
-    var t=modal.querySelector('.modal-step[data-ms="'+n+'"]');
+    var t=gate.querySelector('.auth-step[data-as="'+n+'"]');
     if(t)t.classList.add('active');
     if(n===2)startCamera();
     if(n!==2)stopCamera();
@@ -130,15 +116,19 @@
     if(passBtn)passBtn.style.display='none';
   }
 
-  if(accountBtn)accountBtn.addEventListener('click',openModal);
-  if(modalClose)modalClose.addEventListener('click',closeModal);
-  if(modal)modal.addEventListener('click',function(e){if(e.target===modal)closeModal();});
-
-  var nextBtn=modal?modal.querySelector('[data-ms-next]'):null;
+  // Next: validate account code (身份证后六位)
   if(nextBtn)nextBtn.addEventListener('click',function(){
+    var val=loginIdInput.value.trim();
+    if(!val){if(loginIdErr)loginIdErr.textContent='请输入账户编号';loginIdInput.focus();return;}
+    if(val!=='205210'){if(loginIdErr)loginIdErr.textContent='账户编号不正确（请输入身份证后六位）';loginIdInput.focus();return;}
+    if(loginIdErr)loginIdErr.textContent='';
     showStep(2);
   });
-
+  // Clear error on input
+  if(loginIdInput)loginIdInput.addEventListener('input',function(){
+    if(loginIdErr)loginIdErr.textContent='';
+  });
+  // Take photo
   if(startBtn)startBtn.addEventListener('click',function(){
     if(!stream){if(videoStatus){videoStatus.textContent='请先允许摄像头权限';videoStatus.className='video-status error';}return;}
     if(videoOverlay)videoOverlay.classList.add('success');
@@ -146,23 +136,26 @@
     if(videoStatus){videoStatus.textContent='✓ 拍照完成，人脸已识别';videoStatus.className='video-status success';}
     if(passBtn)passBtn.style.display='';
   });
-
+  // Confirm
   if(passBtn)passBtn.addEventListener('click',function(){
     stopCamera();
     showStep(3);
   });
-
+  // Enter page
   if(enterBtn)enterBtn.addEventListener('click',function(){
-    verified=true;
-    if(modal)modal.classList.remove('open');
-    if(accountBtn){accountBtn.classList.add('verified');}
-    if(accountLabel)accountLabel.textContent='艾文杰 ✓';
-    var top=document.getElementById('lease');
-    if(top)top.scrollIntoView({behavior:'smooth',block:'start'});
+    gate.classList.add('hidden');
+    document.body.style.overflow='';
+    // Update nav account button
+    var accountBtn=document.getElementById('accountBtn');
+    var accountLabel=document.getElementById('accountLabel');
+    if(accountBtn)accountBtn.classList.add('verified');
+    if(accountLabel)accountLabel.textContent='艾文杰先生，您好';
   });
-
-  var prevBtn=modal?modal.querySelector('[data-ms-prev]'):null;
+  // Prev
   if(prevBtn)prevBtn.addEventListener('click',function(){stopCamera();showStep(1);});
+
+  // Lock scroll
+  document.body.style.overflow='hidden';
 })();
 
 // ===== Contract Signing Flow =====
